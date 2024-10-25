@@ -5,7 +5,7 @@ import { StudentService } from './student.service';
 const getAllStudents = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction, // this is
 ) => {
   try {
     const result = await StudentService.getAllStudentFromDB();
@@ -15,19 +15,16 @@ const getAllStudents = async (
       data: result,
     });
   } catch (error) {
-    //! this error will show in the console
-    // console.log(error);
-    //! to show the Error in the postman console
-    res.status(500).json({
-      success: false,
-      message: 'Something went wrong ',
-      error: error,
-    });
+    next(error);
   }
 };
 
 // This is for get one student
-const getSingleStudent = async (req: Request, res: Response) => {
+const getSingleStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { studentId } = req.params;
     const result = await StudentService.getSingleStudentFromDB(studentId);
@@ -37,17 +34,14 @@ const getSingleStudent = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    //! this error will show in the console
-    // console.log(error);
-    //! to show the Error in the postman console
-    res.status(500).json({
-      success: false,
-      message: 'Something went wrong ',
-      error: error,
-    });
+    next(error);
   }
 };
-const deleteStudent = async (req: Request, res: Response) => {
+const deleteStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { studentId } = req.params;
     const result = await StudentService.deleteStudentFromDB(studentId);
@@ -57,14 +51,7 @@ const deleteStudent = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    //! this error will show in the console
-    // console.log(error);
-    //! to show the Error in the postman console
-    res.status(500).json({
-      success: false,
-      message: 'Something went wrong ',
-      error: error,
-    });
+    next(error);
   }
 };
 
