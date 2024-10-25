@@ -1,11 +1,12 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { StudentService } from './student.service';
-import studentValidationZodSchema from './student.validation';
-// import Joi, { required } from 'Joi';
-//  This is for create a student
 
 // This is for get all students
-const getAllStudents = async (req: Request, res: Response) => {
+const getAllStudents = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const result = await StudentService.getAllStudentFromDB();
     res.status(200).json({

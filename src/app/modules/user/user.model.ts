@@ -1,4 +1,3 @@
-import { boolean, required } from 'joi';
 import { model, Schema } from 'mongoose';
 import { TUser } from './user.interface';
 import config from '../../config';
@@ -51,7 +50,7 @@ UserScheme.pre('save', async function (next) {
 
 //! post save middleware after save
 UserScheme.post('save', function (doc, next) {
-  //  when this data will save this time the pass will not show in the ui
+  //  when this data will save this time the pass will empty string
   doc.password = '';
   next();
 });

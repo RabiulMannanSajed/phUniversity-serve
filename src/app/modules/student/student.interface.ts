@@ -26,7 +26,6 @@ export type TLocalGuardian = {
 export type TStudent = {
   id: string;
   user: Types.ObjectId;
-  password: string;
   name: TUserName;
   //type union letaral
   gender: 'male' | 'female' | 'other';
