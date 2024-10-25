@@ -1,7 +1,10 @@
 import express, { Application, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
-import { StudentRoute } from './app/modules/student/student.route';
-import { userRouters } from './app/modules/user/user.route';
+import globalErrorhandler from './app/middlewares/globalErrorhandler';
+import notFound from './app/middlewares/notFound';
+import { UserRouters } from './app/modules/user/user.route';
+import { StudentRoutes } from './app/modules/student/student.route';
+import router from './app/routes';
 const app: Application = express();
 
 // parsers
@@ -9,8 +12,8 @@ app.use(express.json());
 app.use(cors());
 
 //  Application routes
-app.use('/api/v1/students', StudentRoute);
-app.use('/api/v1/users', userRouters);
+
+app.use('/api/v1', router);
 
 const getAController = (req: Request, res: Response) => {
   const a = 10;
@@ -19,16 +22,10 @@ const getAController = (req: Request, res: Response) => {
 };
 app.get('/', getAController);
 
-// here making the global error
-app.use((error: any, req: Request, res: Response, next: NextFunction) => {
-  const statusCode = 500;
-  const message = error.message || 'Something went wrong';
+// ! this is not found error
+app.use(notFound);
 
-  return res.status(statusCode).json({
-    success: false,
-    message,
-    error: error,
-  });
-});
+//! here making the global error
+app.use(globalErrorhandler);
 
 export default app;
