@@ -1,4 +1,3 @@
-import { Model } from 'mongoose';
 // this is the user type
 export type TUser = {
   id: string;

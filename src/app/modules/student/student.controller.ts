@@ -1,4 +1,4 @@
-import { NextFunction, Request, RequestHandler, Response } from 'express';
+import { RequestHandler } from 'express';
 import { StudentService } from './student.service';
 import catchAsync from '../../utlis/catchAsync';
 
@@ -14,7 +14,7 @@ const getAllStudents = catchAsync(async (req, res) => {
 });
 
 // This is for get one student
-const getSingleStudent: RequestHandler = catchAsync(async (req, res, next) => {
+const getSingleStudent: RequestHandler = catchAsync(async (req, res) => {
   const { studentId } = req.params;
   const result = await StudentService.getSingleStudentFromDB(studentId);
   res.status(200).json({
@@ -23,7 +23,7 @@ const getSingleStudent: RequestHandler = catchAsync(async (req, res, next) => {
     data: result,
   });
 });
-const deleteStudent: RequestHandler = catchAsync(async (req, res, next) => {
+const deleteStudent: RequestHandler = catchAsync(async (req, res) => {
   const { studentId } = req.params;
   const result = await StudentService.deleteStudentFromDB(studentId);
   res.status(200).json({

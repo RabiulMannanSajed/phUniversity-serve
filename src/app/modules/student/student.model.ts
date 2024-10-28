@@ -86,6 +86,7 @@ const firstName = { toJSON: { virtuals: true } };
 export const studentSchema = new Schema<TStudent, StudentModel>(
   {
     id: { type: String, required: true, unique: true },
+
     user: {
       type: Schema.Types.ObjectId,
       required: [true, 'User Id is required'],
@@ -98,7 +99,8 @@ export const studentSchema = new Schema<TStudent, StudentModel>(
       type: userNameSchema,
       required: true,
     },
-    //    Mongoss give u to set the type as u want this is call inam
+
+    //    Mongoss give u to set the type as u want this is call enum
     gender: {
       type: String,
       enum: {
@@ -108,6 +110,7 @@ export const studentSchema = new Schema<TStudent, StudentModel>(
       },
       required: true,
     },
+
     dataOfBirth: { type: String },
     email: {
       type: String,
@@ -118,16 +121,19 @@ export const studentSchema = new Schema<TStudent, StudentModel>(
         message: '{value}  is not a valid email',
       },
     },
+
     contactNo: { type: String, required: true },
     emergencyContactNo: { type: String, required: true },
     bloodGroup: {
       type: String,
       enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
     },
+
     guardian: {
       type: guardianSchema,
       required: true,
     },
+
     localGuardian: {
       type: localGuardianSchema,
       required: true,
