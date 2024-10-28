@@ -26,23 +26,29 @@ const localGuardianValidationSchema = z.object({
 });
 
 // Define the Zod  for Student
-const studentValidationZodSchema = z.object({
-  id: z.string().min(1, 'ID is required'),
-  password: z.string(),
+export const createStudentValidationZodSchema = z.object({
+  body: z.object({
+    // here this password is coming from the
+    password: z.string(),
 
-  name: userNameValidationSchema,
-  gender: z.enum(['male', 'female', 'other']),
-  dateOfBirth: z.string().optional(),
-  email: z.string().email('Invalid email address'),
-  contactNo: z.string().min(1, 'Contact No is required'),
-  emergencyContactNo: z.string().min(1, 'Emergency Contact No is required'),
-  bloodGroup: z
-    .enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'])
-    .optional(),
-  guardian: guardianValidationSchema,
-  localGuardian: localGuardianValidationSchema,
-  profileImg: z.string().optional(),
-  isActive: z.enum(['active', 'inactive']).default('active'),
-  isDeleted: z.boolean(),
+    //  this is the value if student obj so make it inside the student obj
+    student: z.object({
+      name: userNameValidationSchema,
+      gender: z.enum(['male', 'female', 'other']),
+      dateOfBirth: z.string().optional(),
+      email: z.string().email('Invalid email address'),
+      contactNo: z.string().min(1, 'Contact No is required'),
+      emergencyContactNo: z.string().min(1, 'Emergency Contact No is required'),
+      bloodGroup: z
+        .enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'])
+        .optional(),
+      guardian: guardianValidationSchema,
+      localGuardian: localGuardianValidationSchema,
+      profileImg: z.string().optional(),
+    }),
+  }),
 });
-export default studentValidationZodSchema;
+
+export const studentValidations = {
+  createStudentValidationZodSchema,
+};

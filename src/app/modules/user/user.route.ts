@@ -1,18 +1,14 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { UserControllers } from './user.controller';
+import { AnyZodObject } from 'zod';
+import { createStudentValidationZodSchema } from '../student/student.validation';
+import validationRequest from '../../middlewares/validateRequest';
 
 const route = express.Router();
 
-const army = (name: string) => {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    console.log(`this is an army ${name}`);
-    next();
-  };
-};
-
 route.post(
   '/create-student',
-  army('validation'),
+  validationRequest(createStudentValidationZodSchema),
   UserControllers.createStudent,
 );
 

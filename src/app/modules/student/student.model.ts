@@ -138,6 +138,7 @@ export const studentSchema = new Schema<TStudent, StudentModel>(
       type: localGuardianSchema,
       required: true,
     },
+
     profileImg: {
       type: String,
       default: undefined,
@@ -148,6 +149,7 @@ export const studentSchema = new Schema<TStudent, StudentModel>(
       default: false,
     },
   },
+
   // firstName,
   //  this an another way to use the virtual
   { toJSON: { virtuals: true } },
@@ -181,6 +183,7 @@ studentSchema.pre('findOne', function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();
 });
+
 studentSchema.pre('aggregate', function (next) {
   console.log(this.pipeline());
   this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });

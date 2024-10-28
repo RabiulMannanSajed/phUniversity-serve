@@ -6,7 +6,6 @@ import { User } from './user.model';
 
 const createStudentIntoDB = async (password: string, studentData: TStudent) => {
   //set student role
-
   const userData: Partial<TUser> = {};
   userData.password = password || (config.default_password as string);
   userData.role = 'student';
@@ -14,6 +13,7 @@ const createStudentIntoDB = async (password: string, studentData: TStudent) => {
 
   //Create a user
   const newUser = await User.create(userData);
+
   // Create a student
   if (Object.keys(newUser).length) {
     // set id , _id as user
