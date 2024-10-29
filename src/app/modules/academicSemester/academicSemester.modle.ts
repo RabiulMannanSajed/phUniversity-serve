@@ -14,8 +14,8 @@ const AcademicSemesterSchema = new Schema<TAcademicSemester>({
   },
   code: {
     type: String,
-    enum: AcademicSemesterCode,
     required: true,
+    enum: AcademicSemesterCode,
   },
   year: {
     type: String,
@@ -23,15 +23,31 @@ const AcademicSemesterSchema = new Schema<TAcademicSemester>({
   },
   startMonth: {
     type: String,
+    required: true,
     enum: Month,
   },
   endMonth: {
     type: String,
     enum: Month,
+    required: true,
   },
 });
 
+// here we check the  semester( spring 02 2023 ) in the same year (Autumn 02 2023) not possible
+// so we will check the model before it's save
+AcademicSemesterSchema.pre('save', async function (next) {
+  const isSemesterExists = await AcademicSemester.findOne({
+    // this (this mean the document we send right now )
+    name: this.name,
+    year: this.year,
+  });
+  if (isSemesterExists) {
+    throw new Error('This semester already exists');
+  }
+  next();
+});
+
 export const AcademicSemester = model<TAcademicSemester>(
-  'AcademicSemester',
+  'academicSemester',
   AcademicSemesterSchema,
 );
