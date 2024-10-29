@@ -15,6 +15,6 @@ const academicSemesterValidationSchema = z.object({
   }),
 });
 
-export const academicSemesterValidation = {
+export const AcademicSemesterValidation = {
   academicSemesterValidationSchema,
 };

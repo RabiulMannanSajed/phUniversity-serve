@@ -1,7 +1,8 @@
-import { NextFunction, Request, RequestHandler, Response } from 'express';
+import { RequestHandler } from 'express';
 import { UserServices } from './user.service';
 import sendResponse from '../../utlis/sendResponse';
 
+//  This is for create a student
 const createStudent: RequestHandler = async (req, res, next) => {
   try {
     const { password, student: studentData } = req.body;
