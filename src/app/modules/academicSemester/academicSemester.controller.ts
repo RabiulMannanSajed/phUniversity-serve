@@ -1,9 +1,10 @@
 import { RequestHandler } from 'express';
 import { AcademicSemesterServices } from './academincSemester.service';
 import sendResponse from '../../utlis/sendResponse';
+import catchAsync from '../../utlis/catchAsync';
 
 // TODO : make this controller
-const createAcademicSemester: RequestHandler = async (req, res) => {
+const createAcademicSemester: RequestHandler = catchAsync(async (req, res) => {
   const result = await AcademicSemesterServices.createAcademicSemesterIntoDB(
     req.body,
   );
@@ -13,7 +14,7 @@ const createAcademicSemester: RequestHandler = async (req, res) => {
     message: 'Academic Semester created SuccessFully',
     data: result,
   });
-};
+});
 
 const getAllAcademicSemester: RequestHandler = async (req, res, next) => {
   try {
@@ -22,7 +23,7 @@ const getAllAcademicSemester: RequestHandler = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: 'All Academic Semester is are retrieved successfully',
+      message: 'All Academic Semester are retrieved successfully',
       data: result,
     });
   } catch (error) {
@@ -30,16 +31,20 @@ const getAllAcademicSemester: RequestHandler = async (req, res, next) => {
   }
 };
 const getSingleAcademicSemester: RequestHandler = async (req, res, next) => {
-  const { academicSemesterId } = req.params;
-  const result =
-    await AcademicSemesterServices.singleAcademicSemesterFromDB(
-      academicSemesterId,
-    );
-  res.status(200).json({
-    success: true,
-    message: 'Academic semester is  retrieved successfully',
-    data: result,
-  });
+  try {
+    const { academicSemesterId } = req.params;
+    const result =
+      await AcademicSemesterServices.singleAcademicSemesterFromDB(
+        academicSemesterId,
+      );
+    res.status(200).json({
+      success: true,
+      message: 'Academic semester is  retrieved successfully',
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 export const AcademicSemesterController = {
   createAcademicSemester,

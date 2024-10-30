@@ -5,6 +5,7 @@ import notFound from './app/middlewares/notFound';
 import { UserRouters } from './app/modules/user/user.route';
 import { StudentRoutes } from './app/modules/student/student.route';
 import router from './app/routes';
+
 const app: Application = express();
 
 // parsers
@@ -20,6 +21,7 @@ const getAController = (req: Request, res: Response) => {
   const b = 4;
   res.send(a);
 };
+
 app.get('/', getAController);
 
 // ! this is not found error
