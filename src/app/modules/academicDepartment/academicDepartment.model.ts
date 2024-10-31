@@ -12,7 +12,9 @@ const academicDepartmentSchema = new Schema<TAcademicDepartment>({
     ref: 'AcademicFaculty',
   },
 });
+
 //  here check the is this department already created or not
+// if department exists then u can update or u cant
 academicDepartmentSchema.pre('save', async function (next) {
   const isDepartmentExists = await AcademicDepartment.findOne({
     name: this.name,

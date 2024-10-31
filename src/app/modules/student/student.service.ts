@@ -1,8 +1,18 @@
+import path from 'path';
 import { TStudent } from './student.interface';
 import { Student } from './student.model';
 
 const getAllStudentFromDB = async () => {
-  const result = await Student.find();
+  // here this in the student interface this is hold the value of admissionSemester
+  // then in this  admissionSemester this is hold the value
+  const result = await Student.find().populate('admissionSemester');
+  // add this after some update
+  // .populate({
+  //   path: 'admissionDepartment',
+  //   populate: {
+  //     path: 'admissionFaculty',
+  //   },
+  // });
   return result;
 };
 const getSingleStudentFromDB = async (id: string) => {
