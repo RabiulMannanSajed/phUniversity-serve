@@ -7,11 +7,25 @@ const academicDepartmentSchema = new Schema<TAcademicDepartment>({
     required: true,
     unique: true,
   },
-  academicfaculty: {
+  academicFaculty: {
     type: Schema.Types.ObjectId,
     ref: 'AcademicFaculty',
   },
 });
+//  here check the is this department already created or not
+academicDepartmentSchema.pre('save', async function (next) {
+  const isDepartmentExists = await AcademicDepartment.findOne({
+    name: this.name,
+  });
+
+  if (!isDepartmentExists) {
+    throw new Error('This department already exists');
+  }
+
+  next();
+});
+// here check the id exists or not to update the data
+academicDepartmentSchema.pre('findOneAndUpdate', async function (next) {});
 
 export const AcademicDepartment = model<TAcademicDepartment>(
   'AcademicDepartment',
