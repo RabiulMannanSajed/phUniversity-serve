@@ -17,21 +17,24 @@ const createStudentIntoDB = async (password: string, studentData: TStudent) => {
   const admissionSemester = await AcademicSemester.findById(
     studentData.admissionSemester,
   );
-  //this is the id we generate by user login
-  userData.id = await generateStudentId(admissionSemester);
 
-  //Create a user
-  const newUser = await User.create(userData);
+  try {
+    //this is the id we generate by user login
+    userData.id = await generateStudentId(admissionSemester);
 
-  // Create a student
-  if (Object.keys(newUser).length) {
-    // set id , _id as user
-    studentData.id = newUser.id;
-    studentData.user = newUser._id; //reference _id
+    //Create a user
+    const newUser = await User.create(userData);
 
-    const newStudent = await Student.create(studentData);
-    return newStudent;
-  }
+    // Create a student
+    if (Object.keys(newUser).length) {
+      // set id , _id as user
+      studentData.id = newUser.id;
+      studentData.user = newUser._id; //reference _id
+
+      const newStudent = await Student.create(studentData);
+      return newStudent;
+    }
+  } catch (error) {}
 };
 
 export const UserServices = {
