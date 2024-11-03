@@ -5,14 +5,15 @@ import { Student } from './student.model';
 const getAllStudentFromDB = async () => {
   // here this in the student interface this is hold the value of admissionSemester
   // then in this  admissionSemester this is hold the value
-  const result = await Student.find().populate('admissionSemester');
-  // add this after some update
-  // .populate({
-  //   path: 'admissionDepartment',
-  //   populate: {
-  //     path: 'admissionFaculty',
-  //   },
-  // });
+  const result = await Student.find()
+    .populate('admissionSemester')
+    .populate({
+      path: 'admissionDepartment',
+      populate: {
+        path: 'academicFaculty',
+      },
+    });
+
   return result;
 };
 

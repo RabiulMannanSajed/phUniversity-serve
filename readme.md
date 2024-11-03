@@ -17,3 +17,10 @@
   → Document middleware<br/>
   → Query middleware <br/>
   → Aggergation middleware<br/>
+
+* Transaction Steps <br/>
+  → startSession ( )<br/>
+  → startTransaction ( )<br/>
+  → commitTransaction ( ) if Success<br/>
+  → abortTransaction ( ) if failed<br/>
+  → endSession ( ) <br/>
