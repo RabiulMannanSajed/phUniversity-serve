@@ -9,6 +9,8 @@ route.get('/', StudentController.getAllStudents);
 
 route.get('/:studentId', StudentController.getSingleStudent);
 
+route.patch('/:studentId', StudentController.updateStudent);
+
 route.delete('/:studentId', StudentController.deleteStudent);
 
 export const StudentRoutes = route;
