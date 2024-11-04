@@ -99,9 +99,6 @@ const updateLocalGuardianValidationSchema = z.object({
 
 export const updateStudentValidationZodSchema = z.object({
   body: z.object({
-    // here this password is coming from the
-    password: z.string(),
-
     //  this is the value if student obj so make it inside the student obj
     student: z.object({
       name: updateUserNameValidationSchema,

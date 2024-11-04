@@ -26,8 +26,14 @@ const getSingleStudentFromDB = async (id: string) => {
   return result;
 };
 
-const updateStudentFromDB = async (id: string) => {
-  const result = await Student.findOne({ id }).populate('admissionSemester');
+const updateStudentFromDB = async (id: string, payload: Partial<TStudent>) => {
+  const { name, guardian, localGuardian, ...remainingStudentData } = payload;
+
+  const modifiedUpdatedData: Record<string, unknown> = {
+    ...remainingStudentData,
+  };
+
+  const result = await Student.findOneAndUpdate({ id }, payload);
   return result;
 };
 
@@ -68,6 +74,7 @@ const deleteStudentFromDB = async (id: string) => {
 
     await session.abortTransaction();
     await session.endSession();
+    throw new Error('Failed to  delete student');
   }
 };
 
