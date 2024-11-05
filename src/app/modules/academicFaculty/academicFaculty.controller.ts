@@ -3,19 +3,17 @@ import { AcademicFacultyService } from './academicFaculty.service';
 import catchAsync from '../../utlis/catchAsync';
 import sendResponse from '../../utlis/sendResponse';
 
-const createAcademicFaculty: RequestHandler = catchAsync(
-  async (req, res, next) => {
-    const result = await AcademicFacultyService.createAcademicFacultyIntoDB(
-      req.body,
-    );
-    sendResponse(res, {
-      statusCode: 200,
-      success: true,
-      message: 'Academic Faculty created SuccessFully',
-      data: result,
-    });
-  },
-);
+const createAcademicFaculty: RequestHandler = catchAsync(async (req, res) => {
+  const result = await AcademicFacultyService.createAcademicFacultyIntoDB(
+    req.body,
+  );
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Academic Faculty created SuccessFully',
+    data: result,
+  });
+});
 
 const getAllAcademicFaculties: RequestHandler = async (req, res, next) => {
   try {

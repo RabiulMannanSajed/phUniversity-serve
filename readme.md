@@ -16,7 +16,7 @@
 * Mongoose Middleware<br/>
   → Document middleware<br/>
   → Query middleware <br/>
-  → Aggergation middleware<br/>
+  → Aggregations middleware<br/>
 
 * Transaction Steps <br/>
   Transaction use for do multiple work in one time<br/>

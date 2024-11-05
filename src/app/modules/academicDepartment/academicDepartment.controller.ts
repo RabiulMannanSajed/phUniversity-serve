@@ -4,7 +4,7 @@ import { AcademicDepartmentService } from './academicDepartment.service';
 import sendResponse from '../../utlis/sendResponse';
 
 const createAcademicDepartment: RequestHandler = catchAsync(
-  async (req, res, next) => {
+  async (req, res) => {
     const result =
       await AcademicDepartmentService.createAcademicDepartmentIntoDB(req.body);
     sendResponse(res, {

@@ -15,8 +15,10 @@ route.post(
 );
 //  for get data we don't need the validation
 // this route for find all semester
+
 route.get('/', AcademicSemesterController.getAllAcademicSemester);
 //  this route for findOne  semester
+
 route.get(
   '/:academicSemesterId',
   AcademicSemesterController.getSingleAcademicSemester,

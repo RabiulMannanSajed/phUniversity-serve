@@ -49,6 +49,5 @@ AcademicSemesterSchema.pre('save', async function (next) {
 
 export const AcademicSemester = model<TAcademicSemester>(
   'AcademicSemester', // start this word with cap word
-
   AcademicSemesterSchema,
 );
