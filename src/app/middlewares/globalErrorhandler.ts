@@ -10,14 +10,16 @@ import AppError from './AppError';
 // here we making our won error system
 // const globalErrorhandler: ErrorRequestHandler = (err, req, res, next) => {
 
+// ! this error handler always handle all express errors
+
 const globalErrorhandler = (
   err: any,
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  let statusCode = err.statusCode || 500;
-  let message = err.message || 'Something went wrong ';
+  let statusCode = 500;
+  let message = 'Something went wrong ';
 
   let errorSources: TErrorSource = [
     {
@@ -50,12 +52,21 @@ const globalErrorhandler = (
         message: err?.message,
       },
     ];
+  } else if (err instanceof AppError) {
+    message = err?.message;
+    errorSources = [
+      {
+        path: '',
+        message: err?.message,
+      },
+    ];
   }
+
   return res.status(statusCode).json({
     success: false,
     message,
     errorSources,
-    err,
+    err, // this is will show the err pattern
     stack: config.NODE_ENV === 'development' ? err?.stack : null,
   });
 };
