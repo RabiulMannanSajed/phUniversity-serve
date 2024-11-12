@@ -5,11 +5,21 @@ import mongoose from 'mongoose';
 import AppError from '../../middlewares/AppError';
 import { User } from '../user/user.model';
 
-const getAllStudentFromDB = async () => {
+const getAllStudentFromDB = async (query: Record<string, unknown>) => {
+  //  here we run the search query
+  let searchTerm = '';
+  if (query?.searchTerm) {
+    searchTerm = query?.searchTerm as string;
+  }
+
   // here this in the student interface this is hold the value of admissionSemester
   // then in this  admissionSemester this is hold the value
 
-  const result = await Student.find()
+  const result = await Student.find({
+    $or: ['email', 'name.firstName', 'presentAddress'].map((field) => ({
+      [field]: { $regex: searchTerm, $options: 'i' },
+    })),
+  })
     .populate('admissionSemester')
     .populate({
       path: 'admissionDepartment',

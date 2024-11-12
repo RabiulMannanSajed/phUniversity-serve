@@ -2,8 +2,6 @@ import express, { Application, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import globalErrorhandler from './app/middlewares/globalErrorhandler';
 import notFound from './app/middlewares/notFound';
-import { UserRouters } from './app/modules/user/user.route';
-import { StudentRoutes } from './app/modules/student/student.route';
 import router from './app/routes';
 
 const app: Application = express();
@@ -24,7 +22,7 @@ const getAController = (req: Request, res: Response) => {
 
 app.get('/', getAController);
 
-// ! this is not found error
+// ! this is not found Api error
 app.use(notFound);
 
 //! here making the global error

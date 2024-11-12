@@ -5,7 +5,8 @@ import catchAsync from '../../utlis/catchAsync';
 // This is for get all students
 //  Here use the (Higher order function)
 const getAllStudents = catchAsync(async (req, res) => {
-  const result = await StudentService.getAllStudentFromDB();
+  console.log(req.query);
+  const result = await StudentService.getAllStudentFromDB(req.query);
   res.status(200).json({
     success: true,
     message: 'Students is are retrieved successfully',
