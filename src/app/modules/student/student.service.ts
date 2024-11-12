@@ -11,15 +11,16 @@ const getAllStudentFromDB = async (query: Record<string, unknown>) => {
   if (query?.searchTerm) {
     searchTerm = query?.searchTerm as string;
   }
-
-  // here this in the student interface this is hold the value of admissionSemester
-  // then in this  admissionSemester this is hold the value
-
-  const result = await Student.find({
+  const searchQuery = Student.find({
     $or: ['email', 'name.firstName', 'presentAddress'].map((field) => ({
       [field]: { $regex: searchTerm, $options: 'i' },
     })),
-  })
+  });
+  // here this in the student interface this is hold the value of admissionSemester
+  // then in this  admissionSemester this is hold the value
+
+  const result = await searchQuery
+    .find()
     .populate('admissionSemester')
     .populate({
       path: 'admissionDepartment',
