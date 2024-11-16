@@ -10,5 +10,7 @@ route.post(
   validationRequest(createStudentValidationZodSchema),
   UserControllers.createStudent,
 );
+// route.post('/create-faculty',validationRequest())
+//  TODO : here add the faculty post
 
 export const UserRouters = route;

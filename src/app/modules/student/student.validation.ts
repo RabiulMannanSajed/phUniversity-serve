@@ -28,7 +28,7 @@ const localGuardianValidationSchema = z.object({
 // Define the Zod  for Student
 export const createStudentValidationZodSchema = z.object({
   body: z.object({
-    // here this password is coming from the
+    // here this password is coming from the user
     password: z.string(),
 
     //  this is the value if student obj so make it inside the student obj
