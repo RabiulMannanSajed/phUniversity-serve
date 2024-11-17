@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { mongo } from 'mongoose';
 import config from '../../config';
 import { TAcademicSemester } from '../academicSemester/academicSemester.interface';
 import { AcademicSemester } from '../academicSemester/academicSemester.modle';
@@ -6,9 +6,12 @@ import { TStudent } from '../student/student.interface';
 import { Student } from '../student/student.model';
 import { TUser } from './user.interface';
 import { User } from './user.model';
-import { generateStudentId } from './user.utils';
+import { generateFacultyId, generateStudentId } from './user.utils';
 import AppError from '../../middlewares/AppError';
+import { TFaculty } from '../faculty/faculty.interface';
+import { AcademicDepartment } from '../academicDepartment/academicDepartment.model';
 
+//  this is for create the student
 const createStudentIntoDB = async (password: string, studentData: TStudent) => {
   //set student role
   const userData: Partial<TUser> = {};
@@ -59,6 +62,43 @@ const createStudentIntoDB = async (password: string, studentData: TStudent) => {
     await session.abortTransaction();
     await session.endSession();
     throw new Error('Failed to create the User');
+  }
+};
+
+// this is for create the faculty
+
+const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
+  const userData: Partial<TUser> = {};
+  //if the user provide the pass or we can set the pass from the config file
+  userData.password = password || config.default_password;
+  userData.role = 'faculty';
+
+  const academicDepartment = await AcademicDepartment.findById(
+    payload.academicDepartment,
+  );
+
+  if (!academicDepartment) {
+    throw new AppError(400, 'Academic Department not found ');
+  }
+
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+    userData.id = await generateFacultyId();
+
+    const newUser = await User.create([payload], { session });
+
+    //TODO make this code
+    if (!newUser.length) {
+      throw new AppError(502, 'Failed to create the Faculty ');
+    }
+    // set id , _id as user
+    payload.id = newUser[0].id;
+    payload.user = newUser[0]._id;
+  } catch (error: any) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new Error(error);
   }
 };
 
