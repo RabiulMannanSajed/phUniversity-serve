@@ -97,6 +97,7 @@ const getSingleStudentFromDB = async (id: string) => {
 };
 
 const updateStudentFromDB = async (id: string, payload: Partial<TStudent>) => {
+  // here name ,guardian and  localGuardian cause those value are as objects
   const { name, guardian, localGuardian, ...remainingStudentData } = payload;
 
   const modifiedUpdatedData: Record<string, unknown> = {
@@ -131,47 +132,87 @@ const updateStudentFromDB = async (id: string, payload: Partial<TStudent>) => {
   return result;
 };
 
+// const deleteStudentFromDB = async (id: string) => {
+//   const session = await mongoose.startSession();
+
+//   try {
+//     session.startTransaction();
+
+//     // const deletedStudent = await Student.updateOne({ id }, { isDeleted: true });
+
+//     // here we updating our genId that's why we use the findOneAndUpdate
+//     const deletedStudent = await Student.findOneAndUpdate(
+//       { id },
+//       { isDeleted: true },
+//       { new: true, session }, // in update Transaction this is return an object
+//     );
+
+//     if (!deletedStudent) {
+//       throw new AppError(400, 'Failed to delete the student');
+//     }
+
+//     //  we also delete the same user
+//     const deletedUser = await User.findOneAndUpdate(
+//       { id },
+//       { isDeleted: true },
+//       { new: true, session },
+//     );
+
+//     if (!deletedUser) {
+//       throw new AppError(400, 'Failed to delete the user  ');
+//     }
+
+//     //if all process is successfully done the commit and end the session
+//     await session.commitTransaction();
+//     await session.endSession();
+
+//     return deletedStudent;
+//   } catch (error) {
+//     //if any of the process is failed to  done the commit and end the session
+//     await session.abortTransaction();
+//     await session.endSession();
+
+//     throw new Error('Failed to  delete student');
+//   }
+// };
+
 const deleteStudentFromDB = async (id: string) => {
   const session = await mongoose.startSession();
 
   try {
     session.startTransaction();
 
-    // const deletedStudent = await Student.updateOne({ id }, { isDeleted: true });
-
-    // here we updating our genId that's why we use the findOneAndUpdate
-    const deletedStudent = await Student.findOneAndUpdate(
-      { id },
+    const deletedStudent = await Student.findByIdAndUpdate(
+      id,
       { isDeleted: true },
-      { new: true, session }, // in update Transaction this is return an object
+      { new: true, session },
     );
 
     if (!deletedStudent) {
-      throw new AppError(400, 'Failed to delete the student');
+      throw new AppError(400, 'Failed to delete student');
     }
 
-    //  we also delete the same user
-    const deletedUser = await User.findOneAndUpdate(
-      { id },
+    // get user _id from deletedStudent
+    const userId = deletedStudent.user;
+
+    const deletedUser = await User.findByIdAndUpdate(
+      userId,
       { isDeleted: true },
-      { new: true },
+      { new: true, session },
     );
 
     if (!deletedUser) {
-      throw new AppError(400, 'Failed to delete the user  ');
+      throw new AppError(400, 'Failed to delete user');
     }
 
-    //if all process is successfully done the commit and end the session
     await session.commitTransaction();
     await session.endSession();
 
     return deletedStudent;
-  } catch (error) {
-    //if any of the process is failed to  done the commit and end the session
+  } catch (err) {
     await session.abortTransaction();
     await session.endSession();
-
-    throw new Error('Failed to  delete student');
+    throw new Error('Failed to delete student');
   }
 };
 

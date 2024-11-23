@@ -3,7 +3,6 @@ import { AcademicSemesterServices } from './academincSemester.service';
 import sendResponse from '../../utlis/sendResponse';
 import catchAsync from '../../utlis/catchAsync';
 
-// TODO : make this controller
 const createAcademicSemester: RequestHandler = catchAsync(async (req, res) => {
   const result = await AcademicSemesterServices.createAcademicSemesterIntoDB(
     req.body,

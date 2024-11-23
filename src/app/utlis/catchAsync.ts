@@ -1,6 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 
-// TODO : after read it delete
 // The catchAsync function is a higher-order function designed to handle asynchronous functions in Express.js more gracefully, particularly by catching any errors that might occur during asynchronous execution and passing them to Express's error handler.
 
 // Here’s a breakdown of how it works:
@@ -26,7 +25,7 @@ import { NextFunction, Request, RequestHandler, Response } from 'express';
 // catchAsync catches the error and passes it to next, which triggers the Express error handler to manage the error response.
 // Using this pattern keeps your code cleaner by abstracting error handling away from individual route definitions.
 
-//* Higher Order Function
+//* Higher-Order Function
 const catchAsync = (fn: RequestHandler) => {
   return (req: Request, res: Response, next: NextFunction) => {
     Promise.resolve(fn(req, res, next)).catch((error) => next(error));

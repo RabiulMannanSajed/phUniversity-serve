@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+// this will apply when create the faculty
 const createFacultyUserNameValidationSchema = z.object({
   firstName: z.string().trim().min(1, 'first name is required'),
   middleName: z.string().trim().optional(),
@@ -25,7 +26,7 @@ export const createFacultyValidationSchema = z.object({
   }),
 });
 
-// this is for update a faculty
+// this will apply when update the faculty
 
 const updateFacultyUserNameValidationSchema = z.object({
   firstName: z.string().trim().min(1, 'first name is required').optional(),

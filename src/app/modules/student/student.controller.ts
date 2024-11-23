@@ -31,12 +31,12 @@ const updateStudent: RequestHandler = catchAsync(async (req, res) => {
   const result = await StudentService.updateStudentFromDB(studentId, student);
   res.status(200).json({
     success: true,
-    message: 'Student is deleted successfully',
+    message: 'Student is updated successfully',
     data: result,
   });
 });
 
-const deleteStudent: RequestHandler = catchAsync(async (req, res) => {
+const deleteStudent = catchAsync(async (req, res) => {
   const { studentId } = req.params;
   const result = await StudentService.deleteStudentFromDB(studentId);
   res.status(200).json({

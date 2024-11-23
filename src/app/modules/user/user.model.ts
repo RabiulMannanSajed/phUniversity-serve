@@ -39,7 +39,6 @@ const UserScheme = new Schema<TUser>(
 
 //! pre save middle before save
 UserScheme.pre('save', async function (next) {
-  // TODO : if u console this 'this' u find the hole data
   const user = this; //ref to the doc
 
   user.password = await bcrypt.hash(
