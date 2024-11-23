@@ -91,7 +91,7 @@ const getAllStudentFromDB = async (query: Record<string, unknown>) => {
 };
 
 const getSingleStudentFromDB = async (id: string) => {
-  const result = await Student.findOne({ id }).populate('admissionSemester');
+  const result = await Student.findById(id).populate('admissionSemester');
   // const result = await Student.aggregate([{ $match: { id: id } }]);
   return result;
 };
@@ -124,7 +124,7 @@ const updateStudentFromDB = async (id: string, payload: Partial<TStudent>) => {
   }
   console.log(modifiedUpdatedData);
 
-  const result = await Student.findOneAndUpdate({ id }, modifiedUpdatedData, {
+  const result = await Student.findByIdAndUpdate(id, modifiedUpdatedData, {
     new: true, // this will give u new data
     runValidators: true, // by this mongoose will start the validation again
   });

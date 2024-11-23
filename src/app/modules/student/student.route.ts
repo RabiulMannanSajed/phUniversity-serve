@@ -9,14 +9,14 @@ const route = express.Router();
 
 route.get('/', StudentController.getAllStudents);
 
-route.get('/:studentId', StudentController.getSingleStudent);
+route.get('/:id', StudentController.getSingleStudent);
 
 route.patch(
-  '/:studentId',
+  '/:id',
   validationRequest(updateStudentValidationZodSchema),
   StudentController.updateStudent,
 );
 
-route.delete('/:studentId', StudentController.deleteStudent);
+route.delete('/:id', StudentController.deleteStudent);
 
 export const StudentRoutes = route;
