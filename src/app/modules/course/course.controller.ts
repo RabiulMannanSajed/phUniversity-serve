@@ -9,7 +9,7 @@ const createCourse: RequestHandler = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: 'Course created SuccessFully',
+    message: 'Course created Successfully',
     data: result,
   });
 });
@@ -20,7 +20,7 @@ const getAllCourse: RequestHandler = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: 'All Courses are retrieved SuccessFully',
+    message: 'All Courses are retrieved Successfully',
     data: result,
   });
 });
@@ -37,6 +37,19 @@ const getSingleCourse: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const updateCourse = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const { course } = req.body;
+  const result = await CourseServices.updateCourseIntoDB(id, course);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Course is updated  Successfully',
+    data: result,
+  });
+});
+
 const deleteCourse: RequestHandler = catchAsync(async (req, res) => {
   const { id } = req.params;
   const result = await CourseServices.deleteCourseFromDB(id);
@@ -44,7 +57,7 @@ const deleteCourse: RequestHandler = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: 'Course is delete  SuccessFully',
+    message: 'Course is delete  Successfully',
     data: result,
   });
 });
@@ -54,4 +67,5 @@ export const CourseController = {
   getAllCourse,
   getSingleCourse,
   deleteCourse,
+  updateCourse,
 };

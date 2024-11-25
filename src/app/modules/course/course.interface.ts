@@ -13,10 +13,3 @@ export type TCourse = {
   preRequisiteCourses: [TPreRequisiteCourses];
   isDeleted: boolean;
 };
-
-// TODO remove those thing
-
-type THabitTypes = {};
-type Habit = {
-  habitTypes: [];
-};
