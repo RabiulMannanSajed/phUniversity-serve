@@ -1,6 +1,5 @@
 import { model, Schema } from 'mongoose';
 import { TAcademicFaculty } from './academicFaculty.interface';
-import { tuple } from 'zod';
 
 const academicFacultySchema = new Schema<TAcademicFaculty>(
   {
