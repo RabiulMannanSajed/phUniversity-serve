@@ -32,7 +32,11 @@ const courseSchema = new Schema<TCourse>({
     trim: true,
     required: [true, 'Add the course Code '],
   },
-
+  credits: {
+    type: Number,
+    trim: true,
+    required: [true, 'Add the course credits '],
+  },
   preRequisiteCourses: [preRequisiteCoursesSchema],
 
   isDeleted: {

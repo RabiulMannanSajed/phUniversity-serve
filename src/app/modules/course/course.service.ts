@@ -18,6 +18,7 @@ const getAllCoursesFromDB = async (query: Record<string, unknown>) => {
     .sort()
     .paginate()
     .fields();
+
   const result = await courseQuery.modelQuery;
   return result;
 };
@@ -31,14 +32,16 @@ const getSingleCourseFromDB = async (id: string) => {
 
 const updateCourseIntoDB = async (id: string, payload: Partial<TCourse>) => {
   const { preRequisiteCourses, ...remainingCourseData } = payload;
+
   const updateBasicCourseInfo = await Course.findByIdAndUpdate(
     id,
     remainingCourseData,
     {
       new: true,
-      runValidation: true,
+      runValidators: true,
     },
   );
+  return updateBasicCourseInfo;
 };
 
 const deleteCourseFromDB = async (id: string) => {

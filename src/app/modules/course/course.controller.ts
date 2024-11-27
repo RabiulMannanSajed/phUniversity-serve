@@ -3,7 +3,7 @@ import catchAsync from '../../utlis/catchAsync';
 import sendResponse from '../../utlis/sendResponse';
 import { CourseServices } from './course.service';
 
-const createCourse: RequestHandler = catchAsync(async (req, res) => {
+const createCourse = catchAsync(async (req, res) => {
   const result = await CourseServices.createCourseIntoDB(req.body);
 
   sendResponse(res, {
@@ -14,7 +14,7 @@ const createCourse: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
-const getAllCourse: RequestHandler = catchAsync(async (req, res) => {
+const getAllCourse = catchAsync(async (req, res) => {
   const result = await CourseServices.getAllCoursesFromDB(req.query);
 
   sendResponse(res, {
@@ -39,8 +39,8 @@ const getSingleCourse: RequestHandler = catchAsync(async (req, res) => {
 
 const updateCourse = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const { course } = req.body;
-  const result = await CourseServices.updateCourseIntoDB(id, course);
+  console.log(id, req.body);
+  const result = await CourseServices.updateCourseIntoDB(id, req.body);
 
   sendResponse(res, {
     statusCode: 200,
@@ -50,7 +50,7 @@ const updateCourse = catchAsync(async (req, res) => {
   });
 });
 
-const deleteCourse: RequestHandler = catchAsync(async (req, res) => {
+const deleteCourse = catchAsync(async (req, res) => {
   const { id } = req.params;
   const result = await CourseServices.deleteCourseFromDB(id);
 
