@@ -39,7 +39,7 @@ const getSingleCourse: RequestHandler = catchAsync(async (req, res) => {
 
 const updateCourse = catchAsync(async (req, res) => {
   const { id } = req.params;
-  console.log(id, req.body);
+  console.log('from controller', id, req.body);
   const result = await CourseServices.updateCourseIntoDB(id, req.body);
 
   sendResponse(res, {
