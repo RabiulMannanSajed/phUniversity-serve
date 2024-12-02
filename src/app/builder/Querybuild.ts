@@ -1,6 +1,7 @@
 import { FilterQuery, Query } from 'mongoose';
 
 class QueryBuild<T> {
+  // this model can return the array of obj T[], obj T
   public modelQuery: Query<T[], T>; // this is for model
   public query: Record<string, unknown>; // this is the data of the model
 
