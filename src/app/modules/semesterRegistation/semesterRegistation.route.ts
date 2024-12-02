@@ -12,3 +12,9 @@ route.post(
   ),
   SemesterRegistrationController.createSemesterRegistration,
 );
+
+route.get('/', SemesterRegistrationController.getAllSemesterRegistration);
+
+route.get('/:id', SemesterRegistrationController.getSingleSemesterRegistration);
+
+export const SemesterRegistrationRoute = route;
