@@ -8,6 +8,7 @@ import { FacultyRoutes } from '../modules/faculty/faculty.route';
 import { CourseRoute } from '../modules/course/course.route';
 import { SemesterRegistrationRoute } from '../modules/semesterRegistation/semesterRegistation.route';
 import { OfferedCourseRoutes } from '../modules/offeredCourse/OfferedCourse.route';
+import { AuthRoute } from '../modules/auth/auth.route';
 
 // * this is our global route  here we make the main route of the
 const router = Router();
@@ -56,6 +57,10 @@ const moduleRoutes = [
   {
     path: '/offeredCourse',
     route: OfferedCourseRoutes,
+  },
+  {
+    path: '/auth',
+    route: AuthRoute,
   },
 ];
 

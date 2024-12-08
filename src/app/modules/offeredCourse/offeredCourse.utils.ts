@@ -1,5 +1,4 @@
-import AppError from '../../middlewares/AppError';
-import { Days, TSchedule } from './offeredCourse.interface';
+import { TSchedule } from './offeredCourse.interface';
 
 export const hasTimeConflict = (
   assignedSchedules: TSchedule[],

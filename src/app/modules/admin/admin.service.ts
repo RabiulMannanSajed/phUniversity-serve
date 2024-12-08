@@ -42,6 +42,7 @@ const updateAdminFromDb = async (id: string, payload: Partial<TAdmin>) => {
   });
   return result;
 };
+
 const deleteAdminFromDB = async (id: string) => {
   const session = await mongoose.startSession();
   try {
