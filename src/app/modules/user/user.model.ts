@@ -1,9 +1,10 @@
 import { model, Schema } from 'mongoose';
-import { TUser } from './user.interface';
+import { TUser, UserModel } from './user.interface';
 import config from '../../config';
 import bcrypt from 'bcrypt';
 
-const UserScheme = new Schema<TUser>(
+// when use the static this time need to pass the UserModel
+const UserScheme = new Schema<TUser, UserModel>(
   {
     id: {
       type: String,
@@ -55,4 +56,17 @@ UserScheme.post('save', function (doc, next) {
   next();
 });
 
-export const User = model<TUser>('user', UserScheme);
+//*2nd make the static method and the function make in the interface
+UserScheme.statics.isUserExistsByCustomId = async function (id: string) {
+  return await User.findOne({ id });
+};
+
+// this for check the pass
+UserScheme.statics.isPasswordMatched = async function (
+  plaintextPass,
+  hashedPass,
+) {
+  return await bcrypt.compare(plaintextPass, hashedPass);
+};
+
+export const User = model<TUser, UserModel>('user', UserScheme);
