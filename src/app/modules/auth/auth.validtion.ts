@@ -11,7 +11,7 @@ const changePasswordValidationSchema = z.object({
     oldPassword: z.string({
       required_error: 'Old password is required',
     }),
-    password: z.string({ required_error: 'Password is required' }),
+    newPassword: z.string({ required_error: 'Password is required' }),
   }),
 });
 
