@@ -2,7 +2,9 @@ import config from '../../config';
 import AppError from '../../middlewares/AppError';
 import { User } from '../user/user.model';
 import { TLoginUser } from './auth.interface';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+
 const loginUser = async (payload: TLoginUser) => {
   // checking if the user exists
   const user = await User.isUserExistsByCustomId(payload.id);
@@ -41,10 +43,54 @@ const loginUser = async (payload: TLoginUser) => {
   };
 };
 
-const changePassword = (user: { userId: string; role: string }, payload) => {
-  const result = User.findOneAndUpdate({
-    id: user.userId,
-    role: user.role,
-  });
+const changePassword = async (
+  // those value is coming from controller
+  userData: JwtPayload,
+  payload: { oldPassword: string; newPassword: string },
+) => {
+  console.log('userData', userData);
+  //* start this hole process is for the check the user
+  // checking if the user exists
+  const user = await User.isUserExistsByCustomId(userData.userId);
+  if (!user) {
+    throw new Error('user dose not exists ');
+  }
+
+  //   check if the user is already deleted
+  if (user?.isDeleted) {
+    throw new AppError(404, 'This user is deleted ');
+  }
+
+  //   check if the user is already blocked
+  if (user?.status === 'blocked') {
+    throw new AppError(404, 'This user is blocked ');
+  }
+
+  // here check the oldPass is correct
+  if (!(await User.isPasswordMatched(payload?.oldPassword, user?.password))) {
+    throw new Error('user password dose not matched ');
+  }
+  //* user checking end
+
+  //* this for new pass
+  // this is the process to pass bcrypt
+  const newHashedPassword = await bcrypt.hash(
+    payload.newPassword,
+    Number(config.bcrypt_salt_round),
+  );
+  console.log('newHashedPassword', newHashedPassword);
+
+  const result = await User.findOneAndUpdate(
+    {
+      id: userData.userId,
+      role: userData.role,
+    },
+    {
+      password: newHashedPassword,
+      needsPasswordChange: false,
+      passwordChangeAt: new Date(),
+    },
+  );
+  return null;
 };
 export const AuthService = { changePassword, loginUser };

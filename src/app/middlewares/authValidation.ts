@@ -3,6 +3,7 @@ import { TUserRole } from '../modules/user/user.constant';
 import catchAsync from '../utlis/catchAsync';
 import AppError from './AppError';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+
 const authValidation = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req, res, next) => {
     //  if the token is form the client
@@ -11,7 +12,7 @@ const authValidation = (...requiredRoles: TUserRole[]) => {
       throw new AppError(401, 'You are not authorization');
     }
 
-    // check if the token iis valid
+    // check if the token is valid
     jwt.verify(
       token,
       config.jwt_access_secret as string,
