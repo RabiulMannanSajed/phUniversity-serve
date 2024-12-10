@@ -1,8 +1,9 @@
 import config from '../config';
+import { TUserRole } from '../modules/user/user.constant';
 import catchAsync from '../utlis/catchAsync';
 import AppError from './AppError';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-const authValidation = () => {
+const authValidation = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req, res, next) => {
     //  if the token is form the client
     const token = req.headers.authorization;
@@ -21,6 +22,12 @@ const authValidation = () => {
         }
         // decoded undefined
         console.log('decoded', decoded);
+
+        // check the role
+        if (requiredRoles && !requiredRoles.includes(decoded?.role)) {
+          throw new AppError(401, 'You are not authorization');
+        }
+
         req.user = decoded as JwtPayload;
         next();
       },

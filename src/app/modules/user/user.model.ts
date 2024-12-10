@@ -14,6 +14,8 @@ const UserScheme = new Schema<TUser, UserModel>(
     password: {
       type: String,
       required: true,
+      // this is use fro when u don't show any property to sever and client
+      select: 0,
     },
     needsPasswordChange: {
       type: Boolean,
@@ -58,7 +60,7 @@ UserScheme.post('save', function (doc, next) {
 
 //*2nd make the static method and the function make in the interface
 UserScheme.statics.isUserExistsByCustomId = async function (id: string) {
-  return await User.findOne({ id });
+  return await User.findOne({ id }).select('+password'); // here in pass this select 0 ,+ use for to show other info of the user
 };
 
 // this for check the pass
