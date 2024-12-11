@@ -10,6 +10,7 @@
 //* to read the static model
 //* https://mongoosejs.com/docs/typescript/statics-and-methods.html
 
+import { boolean } from 'joi';
 import { Model } from 'mongoose';
 
 export interface TUser {
@@ -33,4 +34,12 @@ export interface UserModel extends Model<TUser> {
     plaintextPass: string,
     hashedPass: string,
   ): Promise<boolean>;
+
+  // track the user is hacked or not
+  // if the toke stolen
+  // if the user change the pass then new token gen then stop the prev token
+  isJwtIssuedBeforePassChange(
+    passwordChangeTimestamp: Date,
+    jwtIssuedTimeStamp: number,
+  ): boolean;
 }
