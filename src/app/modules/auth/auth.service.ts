@@ -160,4 +160,42 @@ const refreshToken = async (token: string) => {
   };
 };
 
-export const AuthService = { changePassword, loginUser, refreshToken };
+const forgetPassword = async (userId: string) => {
+  const user = await User.isUserExistsByCustomId(userId);
+  if (!user) {
+    throw new Error('user dose not exists here');
+  }
+
+  //   check if the user is already deleted
+  if (user?.isDeleted) {
+    throw new AppError(404, 'This user is deleted ');
+  }
+
+  //   check if the user is already blocked
+  if (user?.status === 'blocked') {
+    throw new AppError(404, 'This user is blocked !');
+  }
+
+  //  Create token ans sent to the client
+  const jwtPayload = {
+    userId: user?.id,
+    role: user?.role,
+  };
+
+  // this is access Token
+  const resetToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    '10m',
+  );
+  // this url form the client site
+  const resetUILink = `http://localhost:3000?id=${user.id}&token=${resetToken}`;
+  console.log(resetUILink);
+};
+
+export const AuthService = {
+  changePassword,
+  loginUser,
+  refreshToken,
+  forgetPassword,
+};

@@ -10,11 +10,11 @@
 //* to read the static model
 //* https://mongoosejs.com/docs/typescript/statics-and-methods.html
 
-import { boolean } from 'joi';
 import { Model } from 'mongoose';
 
 export interface TUser {
   id: string;
+  email: string;
   password: string;
   role: 'admin' | 'student' | 'faculty';
   needsPasswordChange?: boolean;
