@@ -7,15 +7,23 @@ import { USER_ROLE } from '../user/user.constant';
 
 const route = express.Router();
 
+//! Naver user auth Gard in the login and refresh
 route.post(
   '/login',
   validationRequest(AuthValidation.loginValidationSchema),
   AuthControllers.loginUser,
 );
+
 route.post(
   '/change-password',
   authValidation(USER_ROLE.admin, USER_ROLE.faculty, USER_ROLE.student),
   validationRequest(AuthValidation.changePasswordValidationSchema),
   AuthControllers.changePassword,
+);
+
+route.post(
+  '/refresh-token',
+  validationRequest(AuthValidation.refreshTokenValidationSchema),
+  AuthControllers.refreshToken,
 );
 export const AuthRoute = route;

@@ -4,8 +4,8 @@ import sendResponse from '../../utlis/sendResponse';
 import { FacultyServices } from './faculty.service';
 
 const getAllFaculties = catchAsync(async (req, res) => {
+  console.log(req.cookies);
   const result = await FacultyServices.getAllFacultyFromDB(req.query);
-
   sendResponse(res, {
     statusCode: 200,
     success: true,

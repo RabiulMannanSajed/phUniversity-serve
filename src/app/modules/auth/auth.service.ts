@@ -59,6 +59,7 @@ const changePassword = async (
   userData: JwtPayload,
   payload: { oldPassword: string; newPassword: string },
 ) => {
+  console.log(payload);
   console.log('userData', userData);
   //* start this hole process is for the check the user
   // checking if the user exists
@@ -104,4 +105,59 @@ const changePassword = async (
   );
   return null;
 };
-export const AuthService = { changePassword, loginUser };
+
+const refreshToken = async (token: string) => {
+  // check if the token is valid
+  var decoded = jwt.verify(
+    token,
+    config.jwt_refresh_secret as string,
+  ) as JwtPayload;
+
+  // check the role
+  const { role, userId, iat } = decoded;
+  console.log('decoded', decoded);
+  //* start this hole process is for the check the user
+  // checking if the user exists
+  const user = await User.isUserExistsByCustomId(userId);
+  if (!user) {
+    throw new Error('user dose not exists here');
+  }
+
+  //   check if the user is already deleted
+  if (user?.isDeleted) {
+    throw new AppError(404, 'This user is deleted ');
+  }
+
+  //   check if the user is already blocked
+  if (user?.status === 'blocked') {
+    throw new AppError(404, 'This user is blocked ');
+  }
+
+  //* Checking track the user is hacked or not
+  // if the toke stolen
+  // if the user change the pass then new token gen then stop the prev token
+  if (
+    user.passwordChangeAt &&
+    User.isJwtIssuedBeforePassChange(user.passwordChangeAt, iat as number)
+  ) {
+    throw new AppError(401, 'You are not authorization');
+  }
+
+  //  Create token ans sent to the client
+  const jwtPayload = {
+    userId: user?.id,
+    role: user?.role,
+  };
+
+  // this is access Token
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expires as string,
+  );
+  return {
+    accessToken,
+  };
+};
+
+export const AuthService = { changePassword, loginUser, refreshToken };

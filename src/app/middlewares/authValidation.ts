@@ -20,13 +20,14 @@ const authValidation = (...requiredRoles: TUserRole[]) => {
     ) as JwtPayload;
 
     // check the role
-    const { role, id, iat } = decoded;
+    const { role, userId, iat } = decoded;
+    console.log(decoded);
 
     //* start this hole process is for the check the user
     // checking if the user exists
-    const user = await User.isUserExistsByCustomId(id);
+    const user = await User.isUserExistsByCustomId(userId);
     if (!user) {
-      throw new Error('user dose not exists ');
+      throw new Error('user dose not exists here');
     }
 
     //   check if the user is already deleted
